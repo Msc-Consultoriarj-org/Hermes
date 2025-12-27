@@ -91,7 +91,7 @@ ALTER TABLE bens_patrimoniais ENABLE ROW LEVEL SECURITY;
 CREATE OR REPLACE FUNCTION get_user_role()
 RETURNS text
 LANGUAGE sql
-STABLE
+VOLATILE
 AS $$
   SELECT papel FROM perfis WHERE id = auth.uid();
 $$;
