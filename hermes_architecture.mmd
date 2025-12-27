@@ -1,0 +1,28 @@
+graph TD
+    subgraph "Ambiente de Desenvolvimento (GitHub)"
+        A[Desenvolvedor] -->|Push| B(GitHub Repository)
+        B -->|Trigger| C{GitHub Actions}
+        C -->|Executa| D[Testes Unitários]
+        C -->|Executa| E[Playwright E2E Tests]
+        C -->|Deploy| F[Supabase Migrations]
+    end
+
+    subgraph "Infraestrutura (Supabase)"
+        F --> G[(PostgreSQL DB)]
+        G --> H[Row-Level Security - RLS]
+        I[Supabase Auth] --> H
+        J[Supabase Storage]
+    end
+
+    subgraph "Interface do Usuário (Frontend)"
+        K[Web App - React/Next.js] -->|Auth| I
+        K -->|API/SQL| G
+        K -->|Arquivos| J
+    end
+
+    subgraph "Usuários Detran-RJ"
+        L[DTIC - Fase 1] --> K
+        M[Patrimônio - Fase 2] --> K
+        N[Sede - Fase 3] --> K
+        O[Pontos - Fase 4] --> K
+    end

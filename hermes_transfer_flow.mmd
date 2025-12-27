@@ -1,0 +1,14 @@
+sequenceDiagram
+    participant U1 as Unidade Origem (DTIC)
+    participant S as Sistema Hermes (Supabase)
+    participant U2 as Unidade Destino (Patrimônio)
+    
+    U1->>S: Solicita Transferência de Bem
+    S->>S: Valida Permissões (RLS)
+    S->>S: Registra Status "Em Trânsito"
+    S-->>U2: Notifica Unidade Destino
+    U2->>S: Confirma Recebimento do Bem
+    S->>S: Atualiza Localização e Responsável
+    S->>S: Gera Termo de Transferência (PDF)
+    S-->>U1: Notifica Conclusão
+    S-->>U2: Notifica Conclusão
