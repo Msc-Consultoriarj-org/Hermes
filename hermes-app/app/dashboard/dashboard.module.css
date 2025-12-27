@@ -1,0 +1,60 @@
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid var(--primary-color);
+  padding-bottom: 10px;
+  margin-bottom: 24px;
+}
+
+.title {
+  font-size: 28px;
+  color: var(--primary-color);
+  margin: 0;
+}
+
+.logoutButton {
+  padding: 8px 16px;
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+}
+
+.tableHeader {
+  border-bottom: 1px solid #ddd;
+  background-color: #f9f9f9;
+}
+
+.tableHeaderCell {
+  padding: 12px;
+  text-align: left;
+}
+
+.tableRow {
+  border-bottom: 1px solid #eee;
+}
+
+.tableCell {
+  padding: 12px;
+}
+
+.loading {
+  /* Estilos para a mensagem de carregamento */
+}
+
+.error {
+  color: red;
+}

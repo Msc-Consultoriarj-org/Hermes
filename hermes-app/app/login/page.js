@@ -1,9 +1,12 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { supabase } from '../../lib/supabaseClient';
+import styles from './login.module.css';
 
 export default function LoginPage() {
+  const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -13,64 +16,57 @@ export default function LoginPage() {
     e.preventDefault();
     setLoading(true);
     setMessage('');
-    const { error } = await supabase.auth.signInWithPassword({
+    const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
-    if (error) {
-      setMessage(error.message);
+
+    if (error || !data.session) {
+      setMessage(error?.message || 'Email ou senha inválidos.');
+      setLoading(false);
     } else {
-      setMessage('Login successful! Redirecting...');
-      // TODO: Redirect to dashboard
+      setMessage('Login bem-sucedido! Redirecionando...');
+      router.push('/dashboard');
     }
-    setLoading(false);
   };
 
   return (
-    <div style={{ maxWidth: '420px', margin: '96px auto', padding: '24px', border: '1px solid #eaeaea', borderRadius: '8px' }}>
-      <h1 style={{ fontSize: '24px', marginBottom: '24px' }}>Login - Sistema Hermes</h1>
+    <div className={styles.container}>
+      <h1 className={styles.title}>Login - Sistema Hermes</h1>
       <form onSubmit={handleLogin}>
         <div>
-          <label htmlFor="email" style={{ display: 'block', marginBottom: '8px' }}>Email</label>
+          <label htmlFor="email" className={styles.label}>Email</label>
           <input
             id="email"
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            style={{ width: '100%', padding: '8px', marginBottom: '16px', border: '1px solid #ccc', borderRadius: '4px' }}
+            className={styles.input}
           />
         </div>
         <div>
-          <label htmlFor="password" style={{ display: 'block', marginBottom: '8px' }}>Password</label>
+          <label htmlFor="password" className={styles.label}>Password</label>
           <input
             id="password"
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
-            style={{ width: '100%', padding: '8px', marginBottom: '16px', border: '1px solid #ccc', borderRadius: '4px' }}
+            className={styles.input}
           />
         </div>
         <div>
           <button
             type="submit"
             disabled={loading}
-            style={{
-              width: '100%',
-              padding: '10px',
-              backgroundColor: '#005A92',
-              color: 'white',
-              border: 'none',
-              borderRadius: '4px',
-              cursor: 'pointer'
-            }}
+            className={styles.button}
           >
             {loading ? 'Loading...' : 'Login'}
           </button>
         </div>
       </form>
-      {message && <p style={{ marginTop: '24px', color: 'red' }}>{message}</p>}
+      {message && <p className={styles.message}>{message}</p>}
     </div>
   );
 }
