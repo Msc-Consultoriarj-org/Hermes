@@ -13,12 +13,13 @@ export default function LoginPage() {
     e.preventDefault();
     setLoading(true);
     setMessage('');
-    const { error } = await supabase.auth.signInWithPassword({
+    const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
-    if (error) {
-      setMessage(error.message);
+
+    if (error || !data.session) {
+      setMessage('Invalid login credentials');
     } else {
       setMessage('Login successful! Redirecting...');
       // TODO: Redirect to dashboard
