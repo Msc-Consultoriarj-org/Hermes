@@ -88,7 +88,7 @@ export default function DashboardPage() {
             <span>Página {page + 1}</span>
             <button
               onClick={() => setPage(p => p + 1)}
-              disabled={loading || bens.length < BENS_PER_PAGE}
+              disabled={bens.length < BENS_PER_PAGE}
               style={{ padding: '8px 16px', cursor: 'pointer' }}
             >
               Próxima
