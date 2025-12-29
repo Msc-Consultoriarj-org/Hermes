@@ -41,31 +41,37 @@ export default function DashboardPage() {
       </h1>
 
       {loading && <p>Carregando...</p>}
-      {error && <p style={{ color: 'red' }}>Erro ao carregar os dados: {error}</p>}
+      {error && <p style={{ color: 'red' }}>Ocorreu um erro ao carregar os dados. Por favor, tente novamente mais tarde.</p>}
 
       {!loading && !error && (
-        <table style={{ width: '100%', borderCollapse: 'collapse', backgroundColor: 'white' }}>
-          <thead>
-            <tr style={{ borderBottom: '1px solid #ddd', backgroundColor: '#f9f9f9' }}>
-              <th style={{ padding: '12px', textAlign: 'left' }}>Nº Patrimônio</th>
-              <th style={{ padding: '12px', textAlign: 'left' }}>Descrição</th>
-              <th style={{ padding: '12px', textAlign: 'left' }}>Status</th>
-              <th style={{ padding: '12px', textAlign: 'left' }}>Unidade</th>
-              <th style={{ padding: '12px', textAlign: 'left' }}>Responsável</th>
-            </tr>
-          </thead>
-          <tbody>
-            {bens.map((bem) => (
-              <tr key={bem.id} style={{ borderBottom: '1px solid #eee' }}>
-                <td style={{ padding: '12px' }}>{bem.numero_patrimonio}</td>
-                <td style={{ padding: '12px' }}>{bem.descricao}</td>
-                <td style={{ padding: '12px' }}>{bem.status}</td>
-                <td style={{ padding: '12px' }}>{bem.unidades?.sigla || 'N/A'}</td>
-                <td style={{ padding: '12px' }}>{bem.perfis?.nome_completo || 'N/A'}</td>
+        bens.length > 0 ? (
+          <table style={{ width: '100%', borderCollapse: 'collapse', backgroundColor: 'white' }}>
+            <thead>
+              <tr style={{ borderBottom: '1px solid #ddd', backgroundColor: '#f9f9f9' }}>
+                <th style={{ padding: '12px', textAlign: 'left' }}>Nº Patrimônio</th>
+                <th style={{ padding: '12px', textAlign: 'left' }}>Descrição</th>
+                <th style={{ padding: '12px', textAlign: 'left' }}>Status</th>
+                <th style={{ padding: '12px', textAlign: 'left' }}>Unidade</th>
+                <th style={{ padding: '12px', textAlign: 'left' }}>Responsável</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {bens.map((bem) => (
+                <tr key={bem.id} style={{ borderBottom: '1px solid #eee' }}>
+                  <td style={{ padding: '12px' }}>{bem.numero_patrimonio}</td>
+                  <td style={{ padding: '12px' }}>{bem.descricao}</td>
+                  <td style={{ padding: '12px' }}>{bem.status}</td>
+                  <td style={{ padding: '12px' }}>{bem.unidades?.sigla || 'N/A'}</td>
+                  <td style={{ padding: '12px' }}>{bem.perfis?.nome_completo || 'N/A'}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        ) : (
+          <p style={{ textAlign: 'center', marginTop: '20px', color: '#666' }}>
+            Nenhum bem patrimonial encontrado.
+          </p>
+        )
       )}
     </div>
   );
