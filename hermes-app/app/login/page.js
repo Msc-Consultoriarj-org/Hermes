@@ -18,7 +18,7 @@ export default function LoginPage() {
       password,
     });
     if (error) {
-      setMessage(error.message);
+      setMessage('Invalid login credentials.');
     } else {
       setMessage('Login successful! Redirecting...');
       // TODO: Redirect to dashboard
