@@ -1,0 +1,71 @@
+name: CI/CD Hermes
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+  pull_request:
+    branches:
+      - main
+      - develop
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+
+    - name: Run Unit and Integration Tests
+      # Assumindo que os testes unitários e de integração estão configurados
+      # Exemplo: run: npm test
+      run: echo "Skipping unit/integration tests for initial setup"
+
+    - name: Build Project
+      run: npm run build
+
+    - name: Run Playwright E2E Tests
+      # Configuração para rodar testes E2E com Playwright
+      # A URL base e as credenciais do Supabase devem ser configuradas como Secrets no GitHub
+      env:
+        SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+        SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+      run: npx playwright test
+
+  deploy:
+    needs: build-and-test
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Build Project
+      run: npm run build
+
+    - name: Deploy to Hosting Service (Exemplo Vercel/Netlify/etc)
+      # Este passo deve ser adaptado ao serviço de hospedagem escolhido
+      # Exemplo: uses: vercel/vercel-action@v1
+      run: echo "Deployment step placeholder"

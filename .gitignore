@@ -1,0 +1,38 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+.pnpm-debug.log*
+
+# Dependency directories
+node_modules/
+jspm_packages/
+
+# Testing
+/coverage
+/.nyc_output
+/test-results
+
+# Production/Build
+/dist
+/build
+/out
+/public
+
+# Supabase
+supabase/
+.env
+.env.local
+
+# IDEs and Editors
+.vscode
+.idea
+*.sublime-project
+*.sublime-workspace
+
+# OS generated files
+.DS_Store
+Thumbs.db
