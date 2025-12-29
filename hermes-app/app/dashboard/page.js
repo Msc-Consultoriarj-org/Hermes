@@ -2,16 +2,26 @@
 
 import { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabaseClient';
+import styles from './page.module.css';
 
 export default function DashboardPage() {
   const [bens, setBens] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalCount, setTotalCount] = useState(0);
+  const itemsPerPage = 15; // Set a fixed number of items per page
 
   useEffect(() => {
+    // Fetches a paginated list of items to improve initial load performance.
+    // By fetching only one page at a time, we avoid loading the entire table into memory.
     async function fetchBens() {
       setLoading(true);
-      const { data, error } = await supabase
+      const from = (currentPage - 1) * itemsPerPage;
+      const to = from + itemsPerPage - 1;
+
+      // Fetch the paginated data and the total count in a single request
+      const { data, error, count } = await supabase
         .from('bens_patrimoniais')
         .select(`
           id,
@@ -20,19 +30,21 @@ export default function DashboardPage() {
           status,
           unidades ( sigla ),
           perfis ( nome_completo )
-        `);
+        `, { count: 'exact' })
+        .range(from, to);
 
       if (error) {
         setError(error.message);
         console.error('Error fetching data:', error);
       } else {
         setBens(data);
+        setTotalCount(count);
       }
       setLoading(false);
     }
 
     fetchBens();
-  }, []);
+  }, [currentPage, itemsPerPage]);
 
   return (
     <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
@@ -72,6 +84,29 @@ export default function DashboardPage() {
             Nenhum bem patrimonial encontrado.
           </p>
         )
+      )}
+
+      {/* Pagination Controls */}
+      {!loading && !error && totalCount > itemsPerPage && (
+        <div className={styles.pagination}>
+          <button
+            onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+            disabled={currentPage === 1}
+            className={styles.button}
+          >
+            Anterior
+          </button>
+          <span className={styles.pageInfo}>
+            Página {currentPage} de {Math.ceil(totalCount / itemsPerPage)}
+          </span>
+          <button
+            onClick={() => setCurrentPage(prev => Math.min(prev + 1, Math.ceil(totalCount / itemsPerPage)))}
+            disabled={currentPage * itemsPerPage >= totalCount}
+            className={styles.button}
+          >
+            Próxima
+          </button>
+        </div>
       )}
     </div>
   );
