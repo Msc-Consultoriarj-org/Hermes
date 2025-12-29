@@ -40,3 +40,4 @@ npm_output.log
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+npm_output.log
