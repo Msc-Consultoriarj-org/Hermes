@@ -17,9 +17,8 @@ export default function LoginPage() {
       email,
       password,
     });
-
-    if (error || !data.session) {
-      setMessage('Invalid login credentials');
+    if (error) {
+      setMessage('E-mail ou senha inválidos.');
     } else {
       setMessage('Login successful! Redirecting...');
       // TODO: Redirect to dashboard
