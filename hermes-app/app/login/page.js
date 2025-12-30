@@ -7,20 +7,20 @@ export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState({ text: '', type: '' });
 
   const handleLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setMessage('');
+    setMessage({ text: '', type: '' });
     const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
     if (error) {
-      setMessage('E-mail ou senha inválidos.');
+      setMessage({ text: 'E-mail ou senha inválidos.', type: 'error' });
     } else {
-      setMessage('Login successful! Redirecting...');
+      setMessage({ text: 'Login successful! Redirecting...', type: 'success' });
       // TODO: Redirect to dashboard
     }
     setLoading(false);
@@ -70,7 +70,11 @@ export default function LoginPage() {
           </button>
         </div>
       </form>
-      {message && <p style={{ marginTop: '24px', color: 'red' }}>{message}</p>}
+      {message.text && (
+        <p style={{ marginTop: '24px', color: message.type === 'success' ? '#28a745' : '#dc3545' }}>
+          {message.text}
+        </p>
+      )}
     </div>
   );
 }
