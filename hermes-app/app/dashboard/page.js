@@ -47,40 +47,40 @@ export default function DashboardPage() {
   }, [currentPage, itemsPerPage]);
 
   return (
-    <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
-      <h1 style={{ fontSize: '28px', color: 'var(--primary-color)', borderBottom: '2px solid var(--primary-color)', paddingBottom: '10px', marginBottom: '24px' }}>
+    <div className={styles.container}>
+      <h1 className={styles.header}>
         Dashboard de Patrimônio
       </h1>
 
       {loading && <p>Carregando...</p>}
-      {error && <p style={{ color: 'red' }}>Ocorreu um erro ao carregar os dados. Por favor, tente novamente mais tarde.</p>}
+      {error && <p className={styles.errorText}>Ocorreu um erro ao carregar os dados. Por favor, tente novamente mais tarde.</p>}
 
       {!loading && !error && (
         bens.length > 0 ? (
-          <table style={{ width: '100%', borderCollapse: 'collapse', backgroundColor: 'white' }}>
+          <table className={styles.table}>
             <thead>
-              <tr style={{ borderBottom: '1px solid #ddd', backgroundColor: '#f9f9f9' }}>
-                <th style={{ padding: '12px', textAlign: 'left' }}>Nº Patrimônio</th>
-                <th style={{ padding: '12px', textAlign: 'left' }}>Descrição</th>
-                <th style={{ padding: '12px', textAlign: 'left' }}>Status</th>
-                <th style={{ padding: '12px', textAlign: 'left' }}>Unidade</th>
-                <th style={{ padding: '12px', textAlign: 'left' }}>Responsável</th>
+              <tr className={styles.tableHeaderRow}>
+                <th className={styles.tableHeaderCell}>Nº Patrimônio</th>
+                <th className={styles.tableHeaderCell}>Descrição</th>
+                <th className={styles.tableHeaderCell}>Status</th>
+                <th className={styles.tableHeaderCell}>Unidade</th>
+                <th className={styles.tableHeaderCell}>Responsável</th>
               </tr>
             </thead>
             <tbody>
               {bens.map((bem) => (
-                <tr key={bem.id} style={{ borderBottom: '1px solid #eee' }}>
-                  <td style={{ padding: '12px' }}>{bem.numero_patrimonio}</td>
-                  <td style={{ padding: '12px' }}>{bem.descricao}</td>
-                  <td style={{ padding: '12px' }}>{bem.status}</td>
-                  <td style={{ padding: '12px' }}>{bem.unidades?.sigla || 'N/A'}</td>
-                  <td style={{ padding: '12px' }}>{bem.perfis?.nome_completo || 'N/A'}</td>
+                <tr key={bem.id} className={styles.tableBodyRow}>
+                  <td className={styles.tableCell}>{bem.numero_patrimonio}</td>
+                  <td className={styles.tableCell}>{bem.descricao}</td>
+                  <td className={styles.tableCell}>{bem.status}</td>
+                  <td className={styles.tableCell}>{bem.unidades?.sigla || 'N/A'}</td>
+                  <td className={styles.tableCell}>{bem.perfis?.nome_completo || 'N/A'}</td>
                 </tr>
               ))}
             </tbody>
           </table>
         ) : (
-          <p style={{ textAlign: 'center', marginTop: '20px', color: '#666' }}>
+          <p className={styles.emptyMessage}>
             Nenhum bem patrimonial encontrado.
           </p>
         )
