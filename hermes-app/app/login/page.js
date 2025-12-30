@@ -1,9 +1,11 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { supabase } from '../../lib/supabaseClient';
 
 export default function LoginPage() {
+  const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -18,10 +20,20 @@ export default function LoginPage() {
       password,
     });
     if (error) {
-      setMessage('E-mail ou senha inválidos.');
+      // Differentiate between user error (invalid credentials) and server errors.
+      // This prevents leaking sensitive information about the server state.
+      if (error.message === 'Invalid login credentials') {
+        setMessage('E-mail ou senha inválidos.');
+      } else {
+        setMessage('Ocorreu um erro. Por favor, tente novamente mais tarde.');
+      }
+    } else if (data.user && data.session) {
+      setMessage('Login bem-sucedido! Redirecionando...');
+      // Redirect to the dashboard on successful login.
+      router.push('/dashboard');
     } else {
-      setMessage('Login successful! Redirecting...');
-      // TODO: Redirect to dashboard
+      // Handle cases where no error is thrown, but the login is unsuccessful.
+      setMessage('E-mail ou senha inválidos.');
     }
     setLoading(false);
   };
