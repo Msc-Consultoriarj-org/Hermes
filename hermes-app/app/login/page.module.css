@@ -1,0 +1,13 @@
+.message {
+  margin-top: 24px;
+  font-size: 14px;
+  text-align: center;
+}
+
+.success {
+  color: #28a745; /* Green */
+}
+
+.error {
+  color: #dc3545; /* Red */
+}

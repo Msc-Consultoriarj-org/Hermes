@@ -1,27 +1,34 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { supabase } from '../../lib/supabaseClient';
+import styles from './page.module.css';
 
 export default function LoginPage() {
+  const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
+  const [messageType, setMessageType] = useState('');
 
   const handleLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
     setMessage('');
+    setMessageType('');
     const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
     if (error) {
       setMessage('E-mail ou senha inválidos.');
+      setMessageType('error');
     } else {
-      setMessage('Login successful! Redirecting...');
-      // TODO: Redirect to dashboard
+      setMessage('Login bem-sucedido! Redirecionando...');
+      setMessageType('success');
+      router.push('/dashboard');
     }
     setLoading(false);
   };
@@ -70,7 +77,15 @@ export default function LoginPage() {
           </button>
         </div>
       </form>
-      {message && <p style={{ marginTop: '24px', color: 'red' }}>{message}</p>}
+      {message && (
+        <p
+          className={`${styles.message} ${
+            messageType === 'success' ? styles.success : styles.error
+          }`}
+        >
+          {message}
+        </p>
+      )}
     </div>
   );
 }
