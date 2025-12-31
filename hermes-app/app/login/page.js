@@ -8,19 +8,25 @@ export default function LoginPage() {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
+  const [messageColor, setMessageColor] = useState('red');
 
   const handleLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
     setMessage('');
+    setMessageColor('red');
     const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
-    if (error) {
+    // 🛡️ Sentinel: Enhanced security check.
+    // A successful login requires a session object, not just the absence of an error.
+    // This prevents false positives where the request succeeds but no session is created.
+    if (error || !data.session) {
       setMessage('E-mail ou senha inválidos.');
     } else {
-      setMessage('Login successful! Redirecting...');
+      setMessageColor('green');
+      setMessage('Login bem-sucedido! Redirecionando...');
       // TODO: Redirect to dashboard
     }
     setLoading(false);
@@ -70,7 +76,7 @@ export default function LoginPage() {
           </button>
         </div>
       </form>
-      {message && <p style={{ marginTop: '24px', color: 'red' }}>{message}</p>}
+      {message && <p style={{ marginTop: '24px', color: messageColor }}>{message}</p>}
     </div>
   );
 }
