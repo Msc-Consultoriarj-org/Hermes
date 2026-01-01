@@ -34,7 +34,7 @@ export default function DashboardPage() {
         .range(from, to);
 
       if (error) {
-        setError(error.message);
+        setError('An error occurred while loading the data.');
         console.error('Error fetching data:', error);
       } else {
         setBens(data);

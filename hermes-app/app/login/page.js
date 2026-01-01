@@ -18,17 +18,7 @@ export default function LoginPage() {
       password,
     });
     if (error) {
-      // 🛡️ Sentinel: Enhanced error handling.
-      // Differentiate between user error and system error.
-      // "Invalid login credentials" is the specific message for bad email/password.
-      // See: https://supabase.com/docs/guides/auth/debugging/error-codes
-      if (error.message === 'Invalid login credentials') {
-        setMessage('E-mail ou senha inválidos.');
-      } else {
-        // For other errors (network, config, Supabase down), show a generic message.
-        // This prevents leaking sensitive system state in error messages.
-        setMessage('Ocorreu um erro. Tente novamente mais tarde.');
-      }
+      setMessage('Invalid login credentials.');
     } else {
       setMessage('Login successful! Redirecting...');
       // TODO: Redirect to dashboard
