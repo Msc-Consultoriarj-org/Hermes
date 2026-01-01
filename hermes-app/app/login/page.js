@@ -8,6 +8,7 @@ export default function LoginPage() {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
+  const [messageType, setMessageType] = useState('');
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -18,19 +19,11 @@ export default function LoginPage() {
       password,
     });
     if (error) {
-      // 🛡️ Sentinel: Enhanced error handling.
-      // Differentiate between user error and system error.
-      // "Invalid login credentials" is the specific message for bad email/password.
-      // See: https://supabase.com/docs/guides/auth/debugging/error-codes
-      if (error.message === 'Invalid login credentials') {
-        setMessage('E-mail ou senha inválidos.');
-      } else {
-        // For other errors (network, config, Supabase down), show a generic message.
-        // This prevents leaking sensitive system state in error messages.
-        setMessage('Ocorreu um erro. Tente novamente mais tarde.');
-      }
+      setMessage('E-mail ou senha inválidos.');
+      setMessageType('error');
     } else {
       setMessage('Login successful! Redirecting...');
+      setMessageType('success');
       // TODO: Redirect to dashboard
     }
     setLoading(false);
@@ -80,7 +73,7 @@ export default function LoginPage() {
           </button>
         </div>
       </form>
-      {message && <p style={{ marginTop: '24px', color: 'red' }}>{message}</p>}
+      {message && <p style={{ marginTop: '24px', color: messageType === 'success' ? 'green' : 'red' }}>{message}</p>}
     </div>
   );
 }
