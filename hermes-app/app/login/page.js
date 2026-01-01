@@ -8,6 +8,7 @@ export default function LoginPage() {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
+  const [messageType, setMessageType] = useState('');
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -19,8 +20,10 @@ export default function LoginPage() {
     });
     if (error) {
       setMessage('E-mail ou senha inválidos.');
+      setMessageType('error');
     } else {
       setMessage('Login successful! Redirecting...');
+      setMessageType('success');
       // TODO: Redirect to dashboard
     }
     setLoading(false);
@@ -70,7 +73,7 @@ export default function LoginPage() {
           </button>
         </div>
       </form>
-      {message && <p style={{ marginTop: '24px', color: 'red' }}>{message}</p>}
+      {message && <p style={{ marginTop: '24px', color: messageType === 'success' ? 'green' : 'red' }}>{message}</p>}
     </div>
   );
 }
