@@ -17,7 +17,7 @@ export default function LoginPage() {
       email,
       password,
     });
-    if (error) {
+    if (error || !data.session) {
       setMessage('Invalid login credentials.');
     } else {
       setMessage('Login successful! Redirecting...');
