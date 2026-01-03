@@ -18,7 +18,13 @@ export default function LoginPage() {
       password,
     });
     if (error) {
-      setMessage('Invalid login credentials.');
+      // 🛡️ Sentinel: Enhanced error handling to avoid leaking system state.
+      // We now differentiate between a user error (invalid credentials) and a system error.
+      if (error.code === 'invalid_credentials') {
+        setMessage('Invalid login credentials.');
+      } else {
+        setMessage('An unexpected error occurred. Please try again later.');
+      }
     } else {
       setMessage('Login successful! Redirecting...');
       // TODO: Redirect to dashboard
