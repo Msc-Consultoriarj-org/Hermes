@@ -8,19 +8,23 @@ export default function LoginPage() {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
+  const [messageType, setMessageType] = useState('');
 
   const handleLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
     setMessage('');
+    setMessageType('');
     const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
     if (error) {
       setMessage('Invalid login credentials.');
+      setMessageType('error');
     } else {
       setMessage('Login successful! Redirecting...');
+      setMessageType('success');
       // TODO: Redirect to dashboard
     }
     setLoading(false);
@@ -70,7 +74,15 @@ export default function LoginPage() {
           </button>
         </div>
       </form>
-      {message && <p style={{ marginTop: '24px', color: 'red' }}>{message}</p>}
+      {message && (
+        <p
+          className={messageType === 'success' ? 'text-success' : 'text-error'}
+          style={{ marginTop: '24px' }}
+          role="alert"
+        >
+          {message}
+        </p>
+      )}
     </div>
   );
 }
