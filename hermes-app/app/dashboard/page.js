@@ -4,13 +4,14 @@ import { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabaseClient';
 import styles from './page.module.css';
 
+const itemsPerPage = 15; // Set a fixed number of items per page
+
 export default function DashboardPage() {
   const [bens, setBens] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
-  const itemsPerPage = 15; // Set a fixed number of items per page
 
   useEffect(() => {
     // Fetches a paginated list of items to improve initial load performance.
@@ -44,7 +45,7 @@ export default function DashboardPage() {
     }
 
     fetchBens();
-  }, [currentPage, itemsPerPage]);
+  }, [currentPage]);
 
   return (
     <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
