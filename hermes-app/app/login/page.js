@@ -1,27 +1,32 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { supabase } from '../../lib/supabaseClient';
 
 export default function LoginPage() {
+  const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
+  const [isError, setIsError] = useState(false);
 
   const handleLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
     setMessage('');
+    setIsError(false);
     const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
     if (error) {
       setMessage('Invalid login credentials.');
+      setIsError(true);
     } else {
       setMessage('Login successful! Redirecting...');
-      // TODO: Redirect to dashboard
+      router.push('/dashboard');
     }
     setLoading(false);
   };
@@ -70,7 +75,7 @@ export default function LoginPage() {
           </button>
         </div>
       </form>
-      {message && <p style={{ marginTop: '24px', color: 'red' }}>{message}</p>}
+      {message && <p role="alert" style={{ marginTop: '24px', color: isError ? 'red' : 'green' }}>{message}</p>}
     </div>
   );
 }
