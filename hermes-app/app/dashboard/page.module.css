@@ -14,3 +14,50 @@
 .pageInfo {
   margin: 0 10px;
 }
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.header {
+  font-size: 28px;
+  color: var(--primary-color);
+  border-bottom: 2px solid var(--primary-color);
+  padding-bottom: 10px;
+  margin-bottom: 24px;
+}
+
+.errorText {
+  color: red;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+}
+
+.tableHeaderRow {
+  border-bottom: 1px solid #ddd;
+  background-color: #f9f9f9;
+}
+
+.tableHeaderCell {
+  padding: 12px;
+  text-align: left;
+}
+
+.tableBodyRow {
+  border-bottom: 1px solid #eee;
+}
+
+.tableCell {
+  padding: 12px;
+}
+
+.emptyMessage {
+  text-align: center;
+  margin-top: 20px;
+  color: #666;
+}
